@@ -1,0 +1,59 @@
+<!-- Modale per operazioni simulate (Deposito e Prelievo) -->
+ <!-- classe comparsa moadale fade e  focus modale  e la schermata vera e propria -->
+<div class="modal fade" id="modaleSimulata" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Effettua un'operazione simulata</h5>
+        <!-- la x in alto a destra per chiudere -->
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- il form per raccogliere  il tipo di operazione  importo cateogria -->
+        <form id="formSimulato">
+          <div class="mb-3">
+            <label for="operazioneSimulataTipo" class="form-label">Tipo di operazione</label>
+            <select class="form-select" id="operazioneSimulataTipo" required>
+              <option value="">Seleziona...</option>
+              <option value="deposito">Deposito</option>
+              <option value="prelievo">Prelievo</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="importoSimulato" class="form-label">Importo (€)</label>
+            <input
+              type="number"
+              step="0.01"
+              class="form-control"
+              id="importoSimulato"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="catagoriaSimulata" class="form-label">Categoria</label>
+            <select class="form-select" id="catagoriaSimulata" required>
+              <option value="">Seleziona...</option>
+              <option value="Accredito stipendio/pensione">Accredito stipendio/pensione</option>
+              <option value="Addebito Utenze">Addebito Utenze</option>
+              <option value="Accredito generico">Accredito generico</option>
+              <option value="Addebito generico">Addebito generico</option>
+              <option value="Rimborso">Rimborso</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <!-- bottone per confermare e annullare l'operazione -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Conferma</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Annulla
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

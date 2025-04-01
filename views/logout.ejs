@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <!-- logo nella scheda del browser -->
+        <link rel="icon" href="/img/logo3.png" type="image/png" />
+    <title>Logout</title>
+  </head>
+  <body>
+    <!-- messaggio di servizio -->
+    <h6>Uscita in corso...</h6>
+    <script>
+      async function effettuaLogout() {
+        try {
+          // Effettua la richiesta di logout POST
+          const response = await fetch('/api/logout', {
+            method: 'POST'
+          });
+
+          // attende la risposta del server in formato JSON
+          const risposta = await response.json();
+
+          // Se il logout è avvenuto con successo, reindirizza alla pagina di login
+          //altrimenti il blocco try catch cattura gli errori
+          window.location.href = '/api/login';
+        } catch (error) {
+          // cattura eventuali errori
+          console.error('Errore nel logout:', error);
+        }
+      }
+
+      // Chiama la funzione effettuaLogout 
+      effettuaLogout();
+    </script>
+  </body>
+</html>

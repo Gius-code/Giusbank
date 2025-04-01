@@ -1,0 +1,51 @@
+<!-- stile  barra navigazione bootstrap expand-lg rende espandibile su shcermi grandi dark testi chiari sfondo blu bg-prymary infine aggiunge l'ombra -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+  <!-- contenitore per espandere la barra su tutto lo schermo  e link per fare in modo che testo  e logo rimandino alla dashboard o  login se non loggato -->
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="/api/dashboard">
+      <!-- logo con dimensione e margine di fine  -->
+      <img src="/img/logo.png" alt="Logo" width="40" height="40" class="me-2">
+      <!-- font size e grassetto -->
+      <span class="fs-5 fw-bold">Giusbank</span>
+    </a>
+    <!-- bottone di espansione navbar per gli schermi piccoli e controllo menu hamburger con successivamente il suo contenitore -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMenu"
+      aria-controls="navbarMenu"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav ms-auto">
+        <!-- uso type of dopo vari tentativi ho trovato la soluzione su type of che mi ha permesso di gestire la variabile quando non loggato quindi non esistente -->
+         <!-- se non è undefined mostra i link per la gestione del conto e profilo -->
+        <% if (typeof user !== 'undefined' ) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/dashboard">Panoramica</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/storico-movimenti"
+            >Storico Movimenti</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/profilo-utente">Profilo</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/api/logout">Esci</a>
+        </li>
+        <% } else { %>
+          <!-- altrimenti mostra il link accedi -->
+        <li class="nav-item">
+          <a class="nav-link" href="/api/login">Accedi</a>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,11 @@
+/* stile della card e delle sezioni registrazione */
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .form-sezione {
+    margin-bottom: 1.5rem;
+  }
+  .container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }

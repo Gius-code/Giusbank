@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/Stile.css" />
+        <!-- logo nella scheda del browser -->
+        <link rel="icon" href="/img/logo3.png" type="image/png" />
+    <title>Storico Movimenti</title>
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <!--  riempimento definito in Stile mi permette di ancorare il footer al fondo espandendo le altre sezioni -->
+    <div class="container mt-4 riempimento">
+      <h1>Storico Movimenti</h1>
+      <!-- table responsive mi permette  di adattare la tabella in base alla dimensione dello schermo  aggiungendo una barra di scorrimento  -->
+      <div class="table-responsive">
+        <!-- classe table bootstrap con bordi e a strisce alternate con margini orizzontali  -->
+        <table class="table table-bordered table-striped mx-10">
+          <!-- riga iniziale della tabella intestazione -->
+          <thead>
+            <tr class="table-primary">
+              <th>Tipo</th>
+              <th>Categoria</th>
+              <th>Importo (€)</th>
+              <th>Data</th>
+              <th>Destinatario</th>
+              <th>Mittente</th>
+            </tr>
+          </thead>
+          <!-- id di riferimento per appendere le righe della tabella -->
+          <tbody id="movimentiTabella"></tbody>
+        </table>
+      </div>
+    </div>
+    <%- include('footer') %>
+    <script>
+
+            // Recupera l'id del conto passato dal server nella renderizzazione della view
+            const contoId = "<%= conto.id %>";
+    </script>
+    <script src="/storicoMovimenti.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

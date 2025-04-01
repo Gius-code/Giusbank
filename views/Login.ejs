@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- logo nella scheda del browser -->
+    <link rel="icon" href="/img/logo3.png" type="image/png" />
+    <title>Giusbank</title>
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- stile personalizzato per sfondo e font -->
+    <link rel="stylesheet" href="/css/Stile.css" />
+    <style>
+      .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- sostituzione Giusbank testo con logo  -->
+    <div class="text-center mt-5">
+      <img src="/img/logo2.png" alt="Logo Giusbank" width="150" height="150" />
+    </div>
+    <div class="container mt-5 riempimento">
+      <!-- divisione in riche e colonne per  avere login e link registrazione uno affianco all'altro  col-md-6 prendo metà dello spazio -->
+      <div class="row">
+        <!--Login a sinistra -->
+        <div class="card col-md-6">
+          <h2 class="text-center mt-3">Accedi al tuo Conto</h2>
+          <form id="formLogin" action="/api/login" method="POST" class="m-3">
+            <!-- Inserimento mail -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Inserisci la tua email"
+                required
+              />
+            </div>
+            <!-- Inserimento passowrd -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Inserisci la password"
+                required
+              />
+            </div>
+            <!-- bottone di accesso -->
+            <button type="submit" class="btn btn-primary">Accedi</button>
+          </form>
+        </div>
+        <!-- registrazione link alla pagina di inserimento dati e successiva sottoscrizione e conto  a destra -->
+        <div
+          class="col-md-6 d-flex align-items-center justify-content-center mt-5"
+        >
+          <div class="text-center">
+            <h2>Vuoi un nuovo contocorrente?</h2>
+            <p>
+              Inserisci i tuoi dati per sottoscrivere un nuovo Conto zero spese
+            </p>
+            <a href="/api/registrazione" class="btn btn-secondary"
+              >Sottoscrivilo subito</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- footer uguale per tutte le pagine -->
+    <%- include('footer') %>
+    <!-- script per il login presente in public -->
+    <script src="/login.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

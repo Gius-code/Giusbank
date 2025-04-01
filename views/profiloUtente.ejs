@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- logo nella scheda del browser -->
+        <link rel="icon" href="/img/logo3.png" type="image/png" />
+    <title>Profilo</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/css/Stile.css" />
+  </head>
+  <body>
+    <%- include('navbar') %>
+    <!--  riempimento definito in Stile mi permette di ancorare il footer al fondo espandendo le altre sezioni -->
+    <div class="riempimento">
+      <h1 class="mb-4 text-center">Profilo Utente</h1>
+      <!-- griglia bootstrap per posizionare la card  centrata-->
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <!-- card per mostrare i dati dell'utente -->
+          <div class="card">
+            <div class="card-body">
+              <!-- come titolo della card c'è il nome e cognome  -->
+              <h5 class="card-title"><%= user.nome %> <%= user.cognome %></h5>
+              <!-- di seguito tutti i dati presenti nel db per quell'utente -->
+              <p class="card-text">
+                <strong>Email:</strong> <%= user.email %> <br />
+                <strong>Sesso:</strong> <%= user.sesso %> <br />
+                <strong>Codice Fiscale:</strong> <%= user.codice_fiscale %>
+                <br />
+                <!-- formattazione della data di nasciata per vederla in formato italiano  -->
+                <strong>Data di nascita:</strong> <%= new
+                Date(user.data_nascita).toLocaleDateString('it-IT', { day:
+                '2-digit', month: '2-digit', year: 'numeric' }) %> <br />
+                <strong>Luogo di nascita:</strong> <%= user.luogo_nascita %>
+                <br />
+                <strong>Indirizzo:</strong> <%= user.indirizzo %> <br />
+                <strong>Professione:</strong> <%= user.professione %> <br />
+              </p>
+            </div>
+          </div>
+          <!-- azioni contestuali raggiungibili da questa pagina  -->
+          <a href="/api/modifica-utente" class="btn btn-warning mt-3"
+            >Modifica Indirzzo e/o professione</a
+          >
+          <a href="/api/cambia-password" class="btn btn-danger mt-3"
+            >Cambia Password</a
+          >
+        </div>
+      </div>
+    </div>
+    <%- include('footer') %>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+/* imposto i margini per tutta la pagina */
+.tutto {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* container dei grafici per larghezza massima e centrato */
+.chart-container {
+  width: auto;
+  height: auto;
+  margin: auto;
+}
+
+/* Assicura che il canvas usi il 100% della larghezza del contenitore */
+.chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* assicura che  per dimensioni piccole i margini sono ridotti a 0 */
+  @media (max-width: 576px) {
+    .tutto {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
