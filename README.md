@@ -1,4 +1,4 @@
-servizio gestione  conto bancari.
+servizio gestione  conto bancario.
 Presenti api per  prelevare depositare e inviare denaro 
 presente dashboard con  stato conto attuale  grafici per entrate uscite e spese per categoria 
 storico movimenti degli ultimi 30 giorni e storico movimenti assoluti
