@@ -1,0 +1,640 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "API bancarie per la gestione conti e utenti",
+      "version": "1.0.0",
+      "description": "API di gestione utenti e conti per un'applicazione bancaria semplificata."
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:3000"
+      }
+    ],
+    "paths": {
+      "/api/registrazione": {
+        "get": {
+          "summary": "Render pagina di registrazione",
+          "description": "Rotta per la pagina di registrazione per creare un nuovo utente.",
+          "responses": {
+            "200": {
+              "description": "OK: Pagina di registrazione in EJS (HTML+css+bootstrap)"
+            }
+          }
+        },
+        "post": {
+          "summary": "API Registrazione nuovo utente",
+          "description": "Registra un nuovo utente con i dati forniti nel body della richiesta.",
+          "requestBody": {
+            "required": true,
+            "description": "Dati anagrafici e credenziali del nuovo utente.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "nome": {
+                      "type": "string"
+                    },
+                    "cognome": {
+                      "type": "string"
+                    },
+                    "sesso": {
+                      "type": "string"
+                    },
+                    "codiceFiscale": {
+                      "type": "string"
+                    },
+                    "dataNascita": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "luogoNascita": {
+                      "type": "string"
+                    },
+                    "indirizzo": {
+                      "type": "string"
+                    },
+                    "professione": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "password"
+                    }
+                  },
+                  "required": [
+                    "nome",
+                    "cognome",
+                    "sesso",
+                    "codiceFiscale",
+                    "dataNascita",
+                    "luogoNascita",
+                    "indirizzo",
+                    "professione",
+                    "email",
+                    "password"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Utente creato con successo."
+            },
+            "409": {
+              "description": "Conflitto: utente già esistente."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/termini-condizioni": {
+        "get": {
+          "summary": "Render della Pagina termini e condizioni",
+          "description": "Rotta per la pagina  termini e le condizioni del servizio.",
+          "responses": {
+            "200": {
+              "description": "Pagina termini e condizioni motore EJS con HTML+css+bootstrap "
+            }
+          }
+        }
+      },
+      "/api/login": {
+        "get": {
+          "summary": "Render della Pagina di login",
+          "description": "Rotta per la pagina di login.",
+          "responses": {
+            "200": {
+              "description": "Pagina di login motore EJS con HTML+css+bootstrap"
+            }
+          }
+        },
+        "post": {
+          "summary": "Api Login utente",
+          "description": "Esegue l'autenticazione dell'utente con email e password forniti.",
+          "requestBody": {
+            "required": true,
+            "description": "Credenziali dell'utente. mail e password  obbligatori",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "password"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "password"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login effettuato con successo."
+            },
+            "401": {
+              "description": "Credenziali non valide."
+            }
+          }
+        }
+      },
+      "/api/logout": {
+        "get": {
+          "summary": "Render della pagina di logout",
+          "description": "renderizza un avviso temporanero di uscita in corso...",
+          "responses": {
+            "200": {
+              "description": "Pagina di logout motore EJS con HTML+css+bootstrap"
+            }
+          }
+        },
+        "post": {
+          "summary": "Api Logout utente",
+          "description": "Esegue il logout dell'utente corrente.",
+          "responses": {
+            "200": {
+              "description": "Logout effettuato con successo."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/dashboard": {
+        "get": {
+          "summary": "render della pagna Dashboard utente",
+          "description": "Mostra la dashboard dell'utente loggato con le informazioni del conto. Richiede autenticazione. altrimenti reindirizza alla pagina di login.",
+          "responses": {
+            "200": {
+              "description": "Pagina dashboard motore EJS con HTML+css+bootstrap, esegue tutte le chiamate per recuperare i dati necessari per le varie sezioni e quindi comporre la pagina e i grafici (movimenti  untenti e conto)"
+            },
+            "404": {
+              "description": "Conto non trovato.questa casistica viene gestita internamente alla pagina dashboard e facendo creare un nuovo conto dopo la registrazione impostando il saldo a null inizialmente.il 404 viene restituito lato server"
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/apri-conto": {
+        "post": {
+          "summary": "Api perApertura conto",
+          "description": "Crea un nuovo conto corrente per l'utente specificato dall'email fornita o dopo la registrazione o l'utente passato dalla dashboard.",
+          "requestBody": {
+            "required": true,
+            "description": "Email dell'utente per cui aprire il conto.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "required": [
+                    "email"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Conto creato con successo."
+            },
+            "400": {
+              "description": "L'email è obbligatoria per creare il conto."
+            },
+            "404": {
+              "description": "Utente non trovato."
+            },
+            "403": {
+              "description": "Utente già in possesso di un conto."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/chiudi-conto": {
+        "post": {
+          "summary": "Api Chiusura conto",
+          "description": "Chiude il conto corrente dell'utente loggato. Richiede autenticazione.",
+          "responses": {
+            "200": {
+              "description": "Conto chiuso recati in filiale per rittirare il saldo rimanente."
+            },
+            "404": {
+              "description": "Conto non trovato."
+            },
+            "409": {
+              "description": "Conto già chiuso."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/deposito": {
+        "post": {
+          "summary": "api post Deposito sul conto",
+          "description": "Effettua un deposito di denaro sul conto dell'utente loggato. Richiede autenticazione.",
+          "requestBody": {
+            "required": true,
+            "description": "Importo da depositare e categoria del movimento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ammontare": {
+                      "type": "number"
+                    },
+                    "categoria": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ammontare",
+                    "categoria"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Deposito effettuato con successo."
+            },
+            "404": {
+              "description": "Conto non trovato."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/prelievo": {
+        "post": {
+          "summary": "api post Prelievo dal conto",
+          "description": "Effettua un prelievo di denaro dal conto dell'utente loggato. Richiede autenticazione.",
+          "requestBody": {
+            "required": true,
+            "description": "Importo da prelevare e categoria del movimento.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ammontare": {
+                      "type": "number"
+                    },
+                    "categoria": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ammontare",
+                    "categoria"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Prelievo effettuato con successo."
+            },
+            "400": {
+              "description": "Saldo insufficiente."
+            },
+            "404": {
+              "description": "Conto non trovato."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/invia-denaro": {
+        "post": {
+          "summary": "Invio denaro",
+          "description": "Api post Invia una somma di denaro dal conto dell'utente loggato a un conto destinatario specificato. Richiede autenticazione.",
+          "requestBody": {
+            "required": true,
+            "description": "Dati del trasferimento: ID_conto destinatario, importo e categoria (opzionale).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "destinatario": {
+                      "type": "integer"
+                    },
+                    "ammontare": {
+                      "type": "number"
+                    },
+                    "categoria": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "destinatario",
+                    "ammontare"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Trasferimento effettuato con successo."
+            },
+            "403": {
+              "description": " campi obbligatori mancanti"
+            },
+            "400": {
+              "description": " saldo insufficiente."
+            },
+            "404": {
+              "description": "Conto mittente o destinatario non trovato."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/storico-movimenti": {
+        "get": {
+          "summary": "rotta get perPagina storico movimenti",
+          "description": "Mostra la pagina dello storico movimenti per il conto dell'utente loggato. Richiede autenticazione.",
+          "responses": {
+            "200": {
+              "description": "Pagina storico movimenti motore EJS con HTML+css+bootstrap"
+            },
+            "404": {
+              "description": "Conto non trovato."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/movimenti/{conto}": {
+        "get": {
+          "summary": "Storico movimenti conto",
+          "description": "Restituisce lo storico dei movimenti per il conto specificato. Richiede autenticazione.",
+          "parameters": [
+            {
+              "name": "conto",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID del conto di cui ottenere i movimenti."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Elenco movimenti restituito."
+            },
+            "404": {
+              "description": "errore: Movimenti non trovati. conto non trovato"
+            },
+            "403": {
+              "description": "Accesso non autorizzato al conto."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/movimenti/{conto}/{dataInizio}/{dataFine}": {
+        "get": {
+          "summary": "Api per  ricavare Storico movimenti per intervallo",
+          "description": "Restituisce i movimenti del conto specificato nell'intervallo di date indicato. Richiede autenticazione.",
+          "parameters": [
+            {
+              "name": "conto",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID del conto di cui ottenere i movimenti."
+            },
+            {
+              "name": "dataInizio",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },
+              "description": "Data di inizio intervallo  aaaa-mm-gg"
+            },
+            {
+              "name": "dataFine",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              },    
+              "description": "Data di fine intervallo aaaa-mm-gg."
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Elenco movimenti nell'intervallo restituito."
+            },
+            "400": {
+              "description": "Formato data non valido messaggio Le date inserite non sono valide. Usa formato aaaa-mm-gg."
+            },
+            "404": {
+              "description": "Movimenti non trovati per l'intervallo richiesto."
+            },
+            "403": {
+              "description": "Accesso non autorizzato al conto."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/profilo-utente": {
+        "get": {
+          "summary": "Rotta per renderizzare la Pagina profilo utente",
+          "description": "Mostra la pagina del profilo utente con i dati personali. Richiede autenticazione.",
+          "responses": {
+            "200": {
+              "description": "Pagina profilo utente  motore EJS con HTML+css+bootstrap"
+            }
+          }
+        }
+      },
+      "/api/modifica-utente": {
+        "get": {
+          "summary": "rotta per  renderizzare la Pagina modifica utente",
+          "description": "Mostra la pagina per modificare l'indirizzo e la professione dell'utente. Richiede autenticazione.",
+          "responses": {
+            "200": {
+              "description": "Pagina modifica utente  motore EJS con HTML+css+bootstrap"
+            }
+          }
+        }
+      },
+      "/api/utente/{id}": {
+        "put": {
+          "summary": "Api per aggiornare alcuni dati utente",
+          "description": "Aggiorna i dati di indirizzo e professione dell'utente specificato. Richiede autenticazione.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID dell'utente da aggiornare."
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "description": "Nuovi valori per indirizzo e professione.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "indirizzo": {
+                      "type": "string"
+                    },
+                    "professione": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "indirizzo",
+                    "professione"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Dati utente aggiornati con successo."
+            },
+            "403": {
+                "description": "Non sei autorizzato a modificare questo utente."
+              },
+            "404": {
+              "description": "Utente non trovato."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/utente/{id}/password": {
+        "put": {
+          "summary": "api per aggiornare password utente",
+          "description": "Aggiorna la password dell'utente specificato. Richiede autenticazione.",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              },
+              "description": "ID dell'utente di cui cambiare la password."
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "description": "Vecchia e nuova password.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "vecchiaPassword": {
+                      "type": "string",
+                      "format": "password"
+                    },
+                    "nuovaPassword": {
+                      "type": "string",
+                      "format": "password"
+                    }
+                  },
+                  "required": [
+                    "vecchiaPassword",
+                    "nuovaPassword"
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Password aggiornata con successo."
+            },
+            "400": {
+              "description": "Richiesta non valida."
+            },
+            "403": {
+              "description": "Non autorizzato a cambiare la password (vecchia password errata o utente non corrispondente)."
+            },
+            "500": {
+              "description": "Errore interno del server."
+            }
+          }
+        }
+      },
+      "/api/cambia-password": {
+        "get": {
+          "summary": "rotta per renderizzare la pagina cambio password",
+          "description": "Mostra la pagina per il cambio password dell'utente. Richiede autenticazione.",
+          "responses": {
+            "200": {
+              "description": "Pagina cambio password motore EJS con HTML+css+bootstrap"
+            }
+          }
+        }
+      }
+    }
+
+  }
+  
